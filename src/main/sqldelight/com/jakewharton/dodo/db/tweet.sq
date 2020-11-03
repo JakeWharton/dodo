@@ -1,0 +1,25 @@
+CREATE TABLE tweet(
+	status_id INTEGER NOT NULL PRIMARY KEY,
+	status_user_id INTEGER NOT NULL,
+	status_user_name TEXT NOT NULL,
+	status_text TEXT NOT NULL,
+
+	retweet_id INTEGER,
+	retweet_user_id INTEGER,
+	retweet_user_name TEXT,
+
+	quoted_id INTEGER,
+	quoted_user_id INTEGER,
+	quoted_user_name TEXT,
+	quoted_text TEXT
+);
+
+newest:
+SELECT MAX(status_id) AS status_id
+FROM tweet
+;
+
+insert:
+INSERT INTO tweet
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+;

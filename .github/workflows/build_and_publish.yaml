@@ -1,0 +1,80 @@
+name: build and publish
+
+on:
+  push:
+    branches:
+      - trunk
+    tags:
+      - '*'
+
+env:
+  GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Build and Publish
+        uses: docker/build-push-action@v1
+        with:
+          username: jakewharton
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+          repository: jakewharton/dodo
+          tag_with_ref: true
+          add_git_labels: true
+
+      - name: Extract release notes
+        id: release_notes
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: ffurrer2/extract-release-notes@v1
+
+      - name: Create Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          body: ${{ steps.release_notes.outputs.release_notes }}
+          files: build/distributions/dodo.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: Get version
+#        id: get_version
+#        if: startsWith(github.ref, 'refs/tags/')
+#        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+#
+#      - name: Set SHA
+#        id: shasum
+#        if: startsWith(github.ref, 'refs/tags/')
+#        run: echo ::set-output name=sha::"$(shasum -a 256 build/distributions/dodo.zip | awk '{printf $1}')"
+#
+#      - name: Bump Brew
+#        if: startsWith(github.ref, 'refs/tags/')
+#        env:
+#          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GH_HOMEBREW_TOKEN }}
+#        run: |
+#          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#          git config --global user.name "github-actions[bot]"
+#
+#          # Update to ensure we have the latest version which supports arbitrary default branches.
+#          brew update
+#
+#          brew tap JakeWharton/repo
+#          brew bump-formula-pr -f --version=${{ steps.get_version.outputs.version }} --no-browse --no-audit \
+#            --sha256=${{ steps.shasum.outputs.sha }} \
+#            --url="https://github.com/JakeWharton/dodo/releases/download/${{ steps.get_version.outputs.version }}/dodo.zip" \
+#            JakeWharton/repo/dodo

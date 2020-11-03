@@ -1,0 +1,52 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10'
+		classpath 'com.squareup.sqldelight:gradle-plugin:1.4.3'
+	}
+}
+
+apply plugin: 'org.jetbrains.kotlin.jvm'
+
+apply plugin: 'com.squareup.sqldelight'
+sqldelight {
+	Database {
+		packageName = 'com.jakewharton.dodo.db'
+	}
+}
+
+apply plugin: 'application'
+mainClassName = 'com.jakewharton.dodo.Main'
+
+dependencies {
+	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.0'
+	implementation 'com.github.ajalt.clikt:clikt:3.0.1'
+	implementation 'com.squareup.sqldelight:sqlite-driver:1.4.3'
+	implementation 'org.twitter4j:twitter4j-core:4.0.7'
+	implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+	testImplementation 'junit:junit:4.13'
+	testImplementation 'com.google.truth:truth:1.0.1'
+}
+
+repositories {
+	mavenCentral()
+}
+
+tasks.named("distTar").configure { task ->
+	task.enabled = false
+}
+tasks.named("assemble").configure { task ->
+	task.dependsOn(tasks.getByName("installDist"))
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile).configureEach { task ->
+	task.kotlinOptions {
+		jvmTarget = '1.8'
+		freeCompilerArgs += [
+				'-progressive',
+		]
+	}
+}
