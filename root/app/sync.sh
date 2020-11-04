@@ -7,7 +7,7 @@ fi
 # If the sync fails we want to avoid triggering the health check.
 set -e
 
-curl -X POST --fail http://localhost:8098/sync
+curl -sS -X POST --fail http://localhost:8098/sync
 
 if [ -n "$HEALTHCHECK_ID" ]; then
 	curl -sS -X POST -o /dev/null --fail "$HEALTHCHECK_HOST/$HEALTHCHECK_ID"
