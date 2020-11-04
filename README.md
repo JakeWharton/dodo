@@ -58,11 +58,14 @@ Options:
   -h, --help  Show this message and exit
 
 Commands:
-  sync
+  sync  Perform a one-time sync of the latest tweets
+  run   Start an HTTP server for displaying tweets and performing syncs
 ```
 ```
 $ dodo sync --help
 Usage: dodo sync [OPTIONS]
+
+  Perform a one-time sync of the latest tweets
 
 Options:
   --db FILE            Sqlite database file
@@ -70,6 +73,21 @@ Options:
   --access-secret KEY  OAuth access token secret
   --api-key KEY        OAuth consumer API key
   --api-secret KEY     OAuth consumer API secret
+  -h, --help           Show this message and exit
+```
+```
+$ dodo run --help
+Usage: dodo run [OPTIONS]
+
+  Start an HTTP server for displaying tweets and performing syncs
+
+Options:
+  --db FILE            Sqlite database file
+  --access-token KEY   OAuth access token
+  --access-secret KEY  OAuth access token secret
+  --api-key KEY        OAuth consumer API key
+  --api-secret KEY     OAuth consumer API secret
+  --port PORT          Port for the HTTP server (default 8098)
   -h, --help           Show this message and exit
 ```
 

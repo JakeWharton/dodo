@@ -7,12 +7,7 @@ fi
 # If the sync fails we want to avoid triggering the health check.
 set -e
 
-/app/bin/dodo sync \
-	--db /data/dodo.db \
-	--access-token "$ACCESS_TOKEN" \
-	--access-secret "$ACCESS_SECRET" \
-	--api-key "$API_KEY" \
-	--api-secret "$API_SECRET"
+curl -X POST --fail http://localhost:8098/sync
 
 if [ -n "$HEALTHCHECK_ID" ]; then
 	curl -sS -X POST -o /dev/null --fail "$HEALTHCHECK_HOST/$HEALTHCHECK_ID"

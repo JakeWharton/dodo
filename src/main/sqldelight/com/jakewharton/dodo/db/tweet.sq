@@ -23,3 +23,8 @@ insert:
 INSERT INTO tweet
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ;
+
+all:
+SELECT *
+FROM tweet
+;

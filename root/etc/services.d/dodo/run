@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+
+/app/bin/dodo run \
+	--db /data/dodo.db \
+	--access-token "$ACCESS_TOKEN" \
+	--access-secret "$ACCESS_SECRET" \
+	--api-key "$API_KEY" \
+	--api-secret "$API_SECRET"
