@@ -1,6 +1,7 @@
 #!/usr/bin/with-contenv sh
 
 /app/bin/dodo run \
+	--port 80 \
 	--db /data/dodo.db \
 	--access-token "$ACCESS_TOKEN" \
 	--access-secret "$ACCESS_SECRET" \
