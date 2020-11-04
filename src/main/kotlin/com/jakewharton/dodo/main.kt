@@ -11,7 +11,6 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import io.ktor.application.call
-import io.ktor.response.respond
 import io.ktor.response.respondBytes
 import io.ktor.response.respondText
 import io.ktor.routing.get
@@ -19,11 +18,8 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import io.ktor.server.netty.NettyApplicationEngine
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import twitter4j.Twitter
 import twitter4j.TwitterFactory
 
 fun main(vararg args: String) {
@@ -88,8 +84,8 @@ private class RunCommand : DodoCommand(
 	help = "Start an HTTP server for displaying tweets and performing syncs",
 ) {
 	private val port by option(metavar = "PORT").int()
-		.default(8098)
-		.help("Port for the HTTP server (default 8098)")
+		.default(defaultPort)
+		.help("Port for the HTTP server (default $defaultPort)")
 
 	override fun run(dodo: Dodo) {
 		embeddedServer(Netty, port) {
@@ -112,5 +108,9 @@ private class RunCommand : DodoCommand(
 				}
 			}
 		}.start(wait = true)
+	}
+
+	companion object {
+		private const val defaultPort = 8098
 	}
 }
