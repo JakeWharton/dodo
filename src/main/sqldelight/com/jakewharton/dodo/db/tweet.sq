@@ -35,4 +35,5 @@ SELECT
 	quoted_user_name,
 	quoted_text
 FROM tweet
+ORDER BY status_id DESC
 ;
