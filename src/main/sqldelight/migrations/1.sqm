@@ -1,3 +1,5 @@
+DROP TABLE tweet;
+
 CREATE TABLE tweet(
 	status_id INTEGER NOT NULL PRIMARY KEY,
 	status_user_id INTEGER NOT NULL,
@@ -15,24 +17,3 @@ CREATE TABLE tweet(
 
 	json TEXT NOT NULL
 );
-
-newest:
-SELECT MAX(status_id) AS status_id
-FROM tweet
-;
-
-insert:
-INSERT INTO tweet
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-;
-
-overview:
-SELECT
-	status_id,
-	status_user_name,
-	status_text,
-	retweet_user_name,
-	quoted_user_name,
-	quoted_text
-FROM tweet
-;

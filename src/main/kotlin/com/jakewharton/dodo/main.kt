@@ -61,6 +61,7 @@ private abstract class DodoCommand(
 			setOAuthAccessTokenSecret(accessSecret)
 			setOAuthConsumerKey(apiKey)
 			setOAuthConsumerSecret(apiSecret)
+			setJSONStoreEnabled(true)
 		}
 		val twitter = TwitterFactory(config).instance
 

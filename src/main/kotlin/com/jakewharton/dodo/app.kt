@@ -1,11 +1,12 @@
 package com.jakewharton.dodo
 
-import com.jakewharton.dodo.db.Tweet
+import com.jakewharton.dodo.db.Overview
 import com.jakewharton.dodo.db.TweetQueries
 import org.slf4j.LoggerFactory
 import twitter4j.Paging
 import twitter4j.Status
 import twitter4j.Twitter
+import twitter4j.TwitterObjectFactory
 
 class Dodo(
 	private val twitter: Twitter,
@@ -38,12 +39,14 @@ class Dodo(
 				quoted_id = quotedStatus?.id,
 				quoted_user_id = quotedStatus?.user?.id,
 				quoted_user_name = quotedStatus?.user?.screenName,
-				quoted_text = quotedStatus?.displayText)
+				quoted_text = quotedStatus?.displayText,
+				json = TwitterObjectFactory.getRawJSON(tweet), // LMAO WTF thread local cache?!?
+			)
 		}
 	}
 
-	fun tweets(): List<Tweet> {
-		return queries.all().executeAsList()
+	fun tweets(): List<Overview> {
+		return queries.overview().executeAsList()
 	}
 
 	private companion object {
