@@ -30,6 +30,7 @@ dependencies {
 	def ktorVersion = '1.4.1'
 	implementation "io.ktor:ktor-server-core:${ktorVersion}"
 	implementation "io.ktor:ktor-server-netty:${ktorVersion}"
+	implementation "io.ktor:ktor-html-builder:${ktorVersion}"
 
 	testImplementation 'junit:junit:4.13'
 	testImplementation 'com.google.truth:truth:1.0.1'
@@ -37,6 +38,12 @@ dependencies {
 
 repositories {
 	mavenCentral()
+	// https://github.com/Kotlin/kotlinx.html/issues/81
+	jcenter {
+		content {
+			includeModule('org.jetbrains.kotlinx', 'kotlinx-html-jvm')
+		}
+	}
 }
 
 tasks.named("distTar").configure { task ->

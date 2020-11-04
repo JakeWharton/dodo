@@ -11,15 +11,22 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import io.ktor.application.call
+import io.ktor.html.respondHtml
 import io.ktor.response.respondBytes
-import io.ktor.response.respondText
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.html.FormMethod.get
+import kotlinx.html.InputType.submit
+import kotlinx.html.InputType.text
+import kotlinx.html.body
+import kotlinx.html.form
+import kotlinx.html.head
+import kotlinx.html.input
+import kotlinx.html.pre
+import kotlinx.html.title
 import twitter4j.TwitterFactory
 
 fun main(vararg args: String) {
@@ -91,13 +98,29 @@ private class RunCommand : DodoCommand(
 		embeddedServer(Netty, port) {
 			routing {
 				get("/") {
-					call.respondText {
-						withContext(Dispatchers.IO) {
-							val tweets = dodo.tweets()
-							buildString {
-								append(tweets.size)
-								appendLine(" tweets\n")
-								tweets.joinTo(this, separator = "\n", prefix = "\n")
+					val query = call.request.queryParameters["q"]
+					val tweets = if (query != null) dodo.search(query) else emptyList()
+					call.respondHtml {
+						head {
+							title("Dodo Tweet Archive")
+						}
+						body {
+							form(action = "/", method = get) {
+								input(name = "q", type = text) {
+									if (query != null) {
+										value = query
+									}
+								}
+								input(type = submit) {
+									value = "Submit"
+								}
+							}
+							pre {
+								+buildString {
+									append(tweets.size)
+									appendLine(" tweets")
+									tweets.joinTo(this, separator = "\n", prefix = "\n")
+								}
 							}
 						}
 					}

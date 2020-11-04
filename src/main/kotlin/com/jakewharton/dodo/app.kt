@@ -1,7 +1,9 @@
 package com.jakewharton.dodo
 
-import com.jakewharton.dodo.db.Overview
+import com.jakewharton.dodo.db.Search
 import com.jakewharton.dodo.db.TweetQueries
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import twitter4j.Paging
 import twitter4j.Status
@@ -45,9 +47,16 @@ class Dodo(
 		}
 	}
 
-	fun tweets(): List<Overview> {
-		return queries.overview().executeAsList()
+	suspend fun search(query: String): List<Search> {
+		return withContext(IO) {
+			queries.search(query.escapeLike('\\')).executeAsList()
+		}
 	}
+
+	private fun String.escapeLike(escapeChar: Char) =
+		this.replace("$escapeChar", "$escapeChar$escapeChar")
+			.replace("%", "$escapeChar%")
+			.replace("_", "${escapeChar}_")
 
 	private companion object {
 		private val logger = LoggerFactory.getLogger(Dodo::class.java)
