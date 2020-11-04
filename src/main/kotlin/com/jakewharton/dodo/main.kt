@@ -12,6 +12,8 @@ import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.int
 import io.ktor.application.call
 import io.ktor.html.respondHtml
+import io.ktor.http.content.resources
+import io.ktor.http.content.static
 import io.ktor.response.respondBytes
 import io.ktor.routing.get
 import io.ktor.routing.post
@@ -19,13 +21,20 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import kotlinx.html.FormMethod.get
-import kotlinx.html.InputType.submit
+import kotlinx.html.InputType
 import kotlinx.html.InputType.text
+import kotlinx.html.a
+import kotlinx.html.blockQuote
 import kotlinx.html.body
+import kotlinx.html.div
 import kotlinx.html.form
 import kotlinx.html.head
 import kotlinx.html.input
-import kotlinx.html.pre
+import kotlinx.html.link
+import kotlinx.html.meta
+import kotlinx.html.nav
+import kotlinx.html.p
+import kotlinx.html.script
 import kotlinx.html.title
 import twitter4j.TwitterFactory
 
@@ -97,29 +106,78 @@ private class RunCommand : DodoCommand(
 	override fun run(dodo: Dodo) {
 		embeddedServer(Netty, port) {
 			routing {
+				static("/static") {
+					resources("static")
+				}
 				get("/") {
 					val query = call.request.queryParameters["q"]
 					val tweets = if (query != null) dodo.search(query) else emptyList()
 					call.respondHtml {
 						head {
+							meta(charset = "utf-8")
+							meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
 							title("Dodo Tweet Archive")
+							link(rel = "stylesheet", href = "/static/chota.min.css")
+							script(src = "https://platform.twitter.com/widgets.js") {
+								async = true
+								charset = "utf-8"
+							}
 						}
 						body {
-							form(action = "/", method = get) {
-								input(name = "q", type = text) {
-									if (query != null) {
-										value = query
+							nav(classes = "nav") {
+								div(classes = "nav-center") {
+									a(href = "/", classes = "brand") {
+										+"Dodo 🐦"
 									}
 								}
-								input(type = submit) {
-									value = "Submit"
-								}
 							}
-							pre {
-								+buildString {
-									append(tweets.size)
-									appendLine(" tweets")
-									tweets.joinTo(this, separator = "\n", prefix = "\n")
+							div(classes = "container") {
+								div(classes = "row") {
+									div(classes = "col") {
+										form(action = "/", method = get, classes = "is-center") {
+											div(classes = "grouped") {
+												input(name = "q", type = text) {
+													placeholder = "Search term"
+													if (query != null) {
+														value = query
+													}
+												}
+												input(type = InputType.submit) {
+													value = "Submit"
+												}
+											}
+										}
+									}
+								}
+								div(classes = "row") {
+									div(classes = "col") {
+										for (tweet in tweets) {
+											blockQuote("twitter-tweet tw-align-center") {
+												p {
+													+tweet.status_text
+
+													if (tweet.quoted_text != null) {
+														blockQuote {
+															p {
+																+tweet.quoted_text
+															}
+															p {
+																+"— @${tweet.quoted_user_name} "
+															}
+														}
+													}
+												}
+												p {
+													+"— @${tweet.status_user_name} "
+												}
+												p {
+													a(href = "https://twitter.com/${tweet.status_user_name}/status/${tweet.status_id}") {
+														+"May 5, 2014" // TODO
+													}
+												}
+											}
+										}
+									}
 								}
 							}
 						}
