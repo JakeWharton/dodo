@@ -14,6 +14,12 @@ class Dodo(
 	private val twitter: Twitter,
 	private val queries: TweetQueries,
 ) {
+	init {
+		require(twitter.configuration.isJSONStoreEnabled) {
+			"JSON store must be enabled"
+		}
+	}
+
 	fun sync() {
 		val newestStatusId = queries.newest().executeAsOne().status_id ?: 1L
 
