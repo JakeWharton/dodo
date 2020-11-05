@@ -119,6 +119,7 @@ private class RunCommand : DodoCommand(
 							meta(name = "viewport", content = "width=device-width, initial-scale=1.0")
 							title("Dodo Tweet Archive")
 							link(rel = "stylesheet", href = "/static/chota.min.css")
+							meta(name = "twitter:dnt", content = "on")
 							script(src = "https://platform.twitter.com/widgets.js") {
 								async = true
 								charset = "utf-8"
@@ -155,6 +156,9 @@ private class RunCommand : DodoCommand(
 									div(classes = "col") {
 										for (tweet in tweets) {
 											blockQuote("twitter-tweet tw-align-center") {
+												attributes["data-cards"] = "hidden"
+												attributes["data-conversation"] = "none"
+
 												p {
 													+tweet.status_text
 
