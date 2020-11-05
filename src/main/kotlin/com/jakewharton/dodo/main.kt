@@ -111,6 +111,7 @@ private class RunCommand : DodoCommand(
 				}
 				get("/") {
 					val query = call.request.queryParameters["q"]
+					val count = dodo.count()
 					val tweets = if (query != null) dodo.search(query) else emptyList()
 					call.respondHtml {
 						head {
@@ -143,7 +144,7 @@ private class RunCommand : DodoCommand(
 													}
 												}
 												input(type = InputType.submit) {
-													value = "Submit"
+													value = "Search $count tweets"
 												}
 											}
 										}

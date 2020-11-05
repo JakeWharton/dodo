@@ -26,6 +26,11 @@ INSERT INTO tweet
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ;
 
+count:
+SELECT COUNT(status_id) AS count
+FROM tweet
+;
+
 search:
 SELECT
 	status_id,

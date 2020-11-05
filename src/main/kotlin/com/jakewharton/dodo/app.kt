@@ -53,6 +53,12 @@ class Dodo(
 		}
 	}
 
+	suspend fun count(): Long {
+		return withContext(IO) {
+			queries.count().executeAsOne()
+		}
+	}
+
 	suspend fun search(query: String): List<Search> {
 		return withContext(IO) {
 			queries.search(query.escapeLike('\\')).executeAsList()
