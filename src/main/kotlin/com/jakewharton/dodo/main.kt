@@ -139,6 +139,7 @@ private class RunCommand : DodoCommand(
 											div(classes = "grouped") {
 												input(name = "q", type = text) {
 													placeholder = "Search term"
+													autoFocus = true
 													if (query != null) {
 														value = query
 													}
