@@ -2,9 +2,76 @@
 
 Script to synchronize your Twitter timeline to a local database for archival and search.
 
+## Usage
+
+Dodo consumes data from Twitter and requires you register your own Twitter application for keys:
+https://developer.twitter.com/en/apply-for-access
+
+You will need an OAuth access token and access secret as well as an API key and secret.
+
+From there, you can run Dodo in one of two ways:
+
+ * [Command line](#command-line)
+ * [Docker](#docker)
+
+### Command-line
+
+Dodo can run in two modes:
+ - One-off syncs via `sync` subcommand, or
+ - Long-running web-server with manual syncs
+
+```
+$ dodo --help
+Usage: dodo [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  -h, --help  Show this message and exit
+
+Commands:
+  sync  Perform a one-time sync of the latest tweets
+  run   Start an HTTP server for displaying tweets and performing syncs
+```
+
+The `sync` subcommand will perform a one-off sync to the specified Sqlite database file.
+You can run it on a cron and use `sqlite3` or any Sqlite-capable tool to consume the data.
+
+```
+$ dodo sync --help
+Usage: dodo sync [OPTIONS]
+
+  Perform a one-time sync of the latest tweets
+
+Options:
+  --db FILE            Sqlite database file
+  --access-token KEY   OAuth access token
+  --access-secret KEY  OAuth access token secret
+  --api-key KEY        OAuth consumer API key
+  --api-secret KEY     OAuth consumer API secret
+  -h, --help           Show this message and exit
+```
+
+The `run` subcommand will start a webserver with a search and manual sync interface. You can also
+POST the `/sync` endpoint to trigger a sync, such as on a cron.
+
+```
+$ dodo run --help
+Usage: dodo run [OPTIONS]
+
+  Start an HTTP server for displaying tweets and performing syncs
+
+Options:
+  --db FILE            Sqlite database file
+  --access-token KEY   OAuth access token
+  --access-secret KEY  OAuth access token secret
+  --api-key KEY        OAuth consumer API key
+  --api-secret KEY     OAuth consumer API secret
+  --port PORT          Port for the HTTP server (default 8098)
+  -h, --help           Show this message and exit
+```
+
 ## Docker
 
-The container runs the tool using cron on a specified schedule and will notify IFTTT.
+The container starts the webserver and automatically triggers sync using cron.
 
 [![Docker Image Version](https://img.shields.io/docker/v/jakewharton/dodo?sort=semver)][hub]
 [![Docker Image Size](https://img.shields.io/docker/image-size/jakewharton/dodo)][layers]
@@ -47,50 +114,6 @@ services:
       - "PUID=..."
       - "PGID=..."
 ```
-
-## Usage
-
-```
-$ dodo --help
-Usage: dodo [OPTIONS] COMMAND [ARGS]...
-
-Options:
-  -h, --help  Show this message and exit
-
-Commands:
-  sync  Perform a one-time sync of the latest tweets
-  run   Start an HTTP server for displaying tweets and performing syncs
-```
-```
-$ dodo sync --help
-Usage: dodo sync [OPTIONS]
-
-  Perform a one-time sync of the latest tweets
-
-Options:
-  --db FILE            Sqlite database file
-  --access-token KEY   OAuth access token
-  --access-secret KEY  OAuth access token secret
-  --api-key KEY        OAuth consumer API key
-  --api-secret KEY     OAuth consumer API secret
-  -h, --help           Show this message and exit
-```
-```
-$ dodo run --help
-Usage: dodo run [OPTIONS]
-
-  Start an HTTP server for displaying tweets and performing syncs
-
-Options:
-  --db FILE            Sqlite database file
-  --access-token KEY   OAuth access token
-  --access-secret KEY  OAuth access token secret
-  --api-key KEY        OAuth consumer API key
-  --api-secret KEY     OAuth consumer API secret
-  --port PORT          Port for the HTTP server (default 8098)
-  -h, --help           Show this message and exit
-```
-
 
 # License
 
