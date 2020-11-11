@@ -3,15 +3,20 @@ CREATE TABLE tweet(
 	status_user_id INTEGER NOT NULL,
 	status_user_name TEXT NOT NULL,
 	status_text TEXT NOT NULL,
+	status_unix_time INTEGER NOT NULL,
 
-	retweet_id INTEGER,
-	retweet_user_id INTEGER,
-	retweet_user_name TEXT,
+	-- Retweet: If one is non-null, all are non-null.
+	retweeted_id INTEGER,
+	retweeted_user_id INTEGER,
+	retweeted_user_name TEXT,
+	retweeted_unix_time INTEGER,
 
+	-- Quote tweet: If one is non-null, all are non-null.
 	quoted_id INTEGER,
 	quoted_user_id INTEGER,
 	quoted_user_name TEXT,
 	quoted_text TEXT,
+	quoted_unix_time INTEGER,
 
 	json TEXT NOT NULL
 );
@@ -23,7 +28,7 @@ FROM tweet
 
 insert:
 INSERT INTO tweet
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ;
 
 count:
@@ -36,9 +41,12 @@ SELECT
 	status_id,
 	status_user_name,
 	status_text,
-	retweet_user_name,
+	status_unix_time,
+	retweeted_user_name,
+	retweeted_unix_time,
 	quoted_user_name,
-	quoted_text
+	quoted_text,
+	quoted_unix_time
 FROM tweet
 WHERE status_text LIKE '%' || ?1 || '%' ESCAPE '\'
    OR quoted_text LIKE '%' || ?1 || '%' ESCAPE '\'

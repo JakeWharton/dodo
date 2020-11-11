@@ -1,0 +1,42 @@
+CREATE TABLE tweet2(
+	status_id INTEGER NOT NULL PRIMARY KEY,
+	status_user_id INTEGER NOT NULL,
+	status_user_name TEXT NOT NULL,
+	status_text TEXT NOT NULL,
+	status_unix_time INTEGER NOT NULL,
+
+	retweeted_id INTEGER,
+	retweeted_user_id INTEGER,
+	retweeted_user_name TEXT,
+	retweeted_unix_time INTEGER,
+
+	quoted_id INTEGER,
+	quoted_user_id INTEGER,
+	quoted_user_name TEXT,
+	quoted_text TEXT,
+	quoted_unix_time INTEGER,
+
+	json TEXT NOT NULL
+);
+
+INSERT INTO tweet2
+SELECT status_id
+     , status_user_id
+     , status_user_name
+     , status_text
+     , 0 -- status_unix_time
+     , retweet_id
+     , retweet_user_id
+     , retweet_user_name
+     , 0 -- retweeted_unix_time
+     , quoted_id
+     , quoted_user_id
+     , quoted_user_name
+     , quoted_text
+     , 0 -- quoted_unix_time
+     , json
+FROM tweet
+;
+
+DROP TABLE tweet;
+ALTER TABLE tweet2 RENAME TO tweet;

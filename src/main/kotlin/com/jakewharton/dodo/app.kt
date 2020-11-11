@@ -41,13 +41,16 @@ class Dodo(
 				status_user_id = tweet.user.id,
 				status_user_name = tweet.user.screenName,
 				status_text = text,
-				retweet_id = tweet.retweetedStatus?.id,
-				retweet_user_id = tweet.retweetedStatus?.user?.id,
-				retweet_user_name = tweet.retweetedStatus?.user?.screenName,
+				status_unix_time = tweet.createdAt.time, // Twitter4J parses in UTC.
+				retweeted_id = tweet.retweetedStatus?.id,
+				retweeted_user_id = tweet.retweetedStatus?.user?.id,
+				retweeted_user_name = tweet.retweetedStatus?.user?.screenName,
+				retweeted_unix_time = tweet.retweetedStatus?.createdAt?.time,  // Twitter4J parses in UTC.
 				quoted_id = quotedStatus?.id,
 				quoted_user_id = quotedStatus?.user?.id,
 				quoted_user_name = quotedStatus?.user?.screenName,
 				quoted_text = quotedStatus?.displayText,
+				quoted_unix_time = quotedStatus?.createdAt?.time, // Twitter4J parses in UTC.
 				json = TwitterObjectFactory.getRawJSON(tweet), // LMAO WTF thread local cache?!?
 			)
 		}
