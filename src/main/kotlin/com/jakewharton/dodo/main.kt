@@ -168,7 +168,11 @@ private class RunCommand : DodoCommand(
 																+tweet.quoted_text
 															}
 															p {
-																+"— @${tweet.quoted_user_name} "
+																+"— "
+																a(href = "https://twitter.com/${tweet.quoted_user_name}") {
+																	rel = "noreferrer noopener"
+																	+"@${tweet.quoted_user_name} "
+																}
 															}
 														}
 													}
@@ -176,9 +180,16 @@ private class RunCommand : DodoCommand(
 												p {
 													+"— "
 													if (tweet.retweeted_user_name != null) {
-														+"@${tweet.retweeted_user_name} retweeted by "
+														a(href = "https://twitter.com/${tweet.retweeted_user_name}") {
+															rel = "noreferrer noopener"
+															+"@${tweet.retweeted_user_name}"
+														}
+														+" retweeted by "
 													}
-													+"@${tweet.status_user_name}"
+													a(href = "https://twitter.com/${tweet.status_user_name}") {
+														rel = "noreferrer noopener"
+														+"@${tweet.status_user_name}"
+													}
 												}
 												p {
 													a(href = "https://twitter.com/${tweet.status_user_name}/status/${tweet.status_id}") {
