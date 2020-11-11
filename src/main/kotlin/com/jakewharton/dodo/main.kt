@@ -174,7 +174,11 @@ private class RunCommand : DodoCommand(
 													}
 												}
 												p {
-													+"— @${tweet.status_user_name} "
+													+"— "
+													if (tweet.retweeted_user_name != null) {
+														+"@${tweet.retweeted_user_name} retweeted by "
+													}
+													+"@${tweet.status_user_name}"
 												}
 												p {
 													a(href = "https://twitter.com/${tweet.status_user_name}/status/${tweet.status_id}") {
