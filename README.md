@@ -1,6 +1,11 @@
 # Dodo
 
-Script to synchronize your Twitter timeline to a local database for archival and search.
+Synchronize your Twitter timeline to a local database for archival and search.
+
+![Screenshot of web interface](screenshot.png)
+
+Available as a binary and Docker container.
+
 
 ## Usage
 
@@ -15,6 +20,15 @@ From there, you can run Dodo in one of two ways:
  * [Docker](#docker)
 
 ### Command-line
+
+Install on Mac OS with:
+```
+$ brew install JakeWharton/repo/dodo
+```
+
+For other platforms, download ZIP from
+[latest release](https://github.com/JakeWharton/dodo/releases/latest)
+and run `bin/dodo` or `bin/dodo.bat`.
 
 Dodo can run in two modes:
  - One-off syncs via `sync` subcommand, or
