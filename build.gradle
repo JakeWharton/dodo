@@ -4,7 +4,7 @@ buildscript {
 	}
 	dependencies {
 		classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.10'
-		classpath 'com.squareup.sqldelight:gradle-plugin:1.4.3'
+		classpath 'com.squareup.sqldelight:gradle-plugin:1.4.4'
 	}
 }
 
@@ -15,6 +15,7 @@ sqldelight {
 	Database {
 		packageName = 'com.jakewharton.dodo.db'
 		schemaOutputDirectory = file('src/main/sqldelight/databases')
+		verifyMigrations = true
 	}
 }
 
