@@ -85,7 +85,7 @@ Options:
 
 ## Docker
 
-The container starts the webserver and automatically triggers sync using cron.
+The container starts the webserver on port 8098 and automatically triggers sync using cron.
 
 [![Docker Image Version](https://img.shields.io/docker/v/jakewharton/dodo?sort=semver)][hub]
 [![Docker Image Size](https://img.shields.io/docker/image-size/jakewharton/dodo)][layers]
