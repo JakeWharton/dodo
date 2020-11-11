@@ -56,9 +56,9 @@ class Dodo(
 		}
 	}
 
-	suspend fun count(): Long {
+	suspend fun totalCount(): Long {
 		return withContext(IO) {
-			queries.count().executeAsOne()
+			queries.totalCount().executeAsOne()
 		}
 	}
 
