@@ -85,30 +85,30 @@ private fun FlowContent.tweet(tweet: Search) {
 					}
 					p {
 						+"— "
-						twitterUsernameLink(tweet.quoted_user_name!!)
+						twitterHandleLink(tweet.quoted_user_handle!!)
 					}
 				}
 			}
 		}
 		p {
 			+"— "
-			if (tweet.retweeted_user_name != null) {
-				twitterUsernameLink(tweet.retweeted_user_name)
+			if (tweet.retweeted_user_handle != null) {
+				twitterHandleLink(tweet.retweeted_user_handle)
 				+" retweeted by "
 			}
-			twitterUsernameLink(tweet.status_user_name)
+			twitterHandleLink(tweet.status_user_handle)
 		}
 		p {
-			a(href = "https://twitter.com/${tweet.status_user_name}/status/${tweet.status_id}") {
+			a(href = "https://twitter.com/${tweet.status_user_handle}/status/${tweet.status_id}") {
 				+"May 5, 2014" // TODO
 			}
 		}
 	}
 }
 
-private fun FlowContent.twitterUsernameLink(userName: String) {
-	a(href = "https://twitter.com/$userName") {
+private fun FlowContent.twitterHandleLink(handle: String) {
+	a(href = "https://twitter.com/$handle") {
 		rel = "noreferrer noopener"
-		+"@$userName"
+		+"@$handle"
 	}
 }

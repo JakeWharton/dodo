@@ -1,6 +1,7 @@
 CREATE TABLE tweet(
 	status_id INTEGER NOT NULL PRIMARY KEY,
 	status_user_id INTEGER NOT NULL,
+	status_user_handle TEXT NOT NULL,
 	status_user_name TEXT NOT NULL,
 	status_text TEXT NOT NULL,
 	status_unix_time INTEGER NOT NULL,
@@ -8,12 +9,14 @@ CREATE TABLE tweet(
 	-- Retweet: If one is non-null, all are non-null.
 	retweeted_id INTEGER,
 	retweeted_user_id INTEGER,
+	retweeted_user_handle TEXT,
 	retweeted_user_name TEXT,
 	retweeted_unix_time INTEGER,
 
 	-- Quote tweet: If one is non-null, all are non-null.
 	quoted_id INTEGER,
 	quoted_user_id INTEGER,
+	quoted_user_handle TEXT,
 	quoted_user_name TEXT,
 	quoted_text TEXT,
 	quoted_unix_time INTEGER,
@@ -28,7 +31,7 @@ FROM tweet
 
 insert:
 INSERT INTO tweet
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
 ;
 
 totalCount:
@@ -39,12 +42,12 @@ FROM tweet
 search:
 SELECT
 	status_id,
-	status_user_name,
+	status_user_handle,
 	status_text,
 	status_unix_time,
-	retweeted_user_name,
+	retweeted_user_handle,
 	retweeted_unix_time,
-	quoted_user_name,
+	quoted_user_handle,
 	quoted_text,
 	quoted_unix_time
 FROM tweet
