@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+Feature:
+
+ * Persist account names at the time of tweet/retweet/quote
+
 
 ## [1.0.0]
 
