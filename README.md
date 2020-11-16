@@ -129,6 +129,17 @@ services:
       - "PGID=..."
 ```
 
+
+## Development
+
+To run the latest code build with `./gradlew installDist`.  This will put the application into
+`build/install/dodo/`. From there you can use the [command-line instructions](#command-line)
+instructions to run.
+
+The Docker containers can be built with `docker build .`, which also runs the full set of checks
+as CI would.
+
+
 # License
 
     Copyright 2020 Jake Wharton
