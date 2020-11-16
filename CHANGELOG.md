@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-Feature:
+
+## [1.1.0]
+
+Features:
 
  * Persist account names at the time of tweet/retweet/quote
 
@@ -16,5 +19,6 @@ Fixed:
  - Initial release
 
 
-[Unreleased]: https://github.com/JakeWharton/dodo/compare/1.0.0...HEAD
+[Unreleased]: https://github.com/JakeWharton/dodo/compare/1.1.0...HEAD
+[1.1.0]: https://github.com/JakeWharton/dodo/releases/tag/1.1.0
 [1.0.0]: https://github.com/JakeWharton/dodo/releases/tag/1.0.0
