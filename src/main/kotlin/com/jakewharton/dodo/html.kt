@@ -18,7 +18,12 @@ import kotlinx.html.meta
 import kotlinx.html.nav
 import kotlinx.html.p
 import kotlinx.html.script
+import kotlinx.html.time
 import kotlinx.html.title
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneOffset.UTC
+import java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
 fun HTML.renderIndex(query: String?, totalCount: Long, tweets: List<Search>) {
 	head {
@@ -67,6 +72,11 @@ fun HTML.renderIndex(query: String?, totalCount: Long, tweets: List<Search>) {
 				}
 			}
 		}
+
+		script(src = "/static/app.js") {
+			async = true
+			charset = "utf-8"
+		}
 	}
 }
 
@@ -100,7 +110,7 @@ private fun FlowContent.tweet(tweet: Search) {
 		}
 		p {
 			a(href = "https://twitter.com/${tweet.status_user_handle}/status/${tweet.status_id}") {
-				+"May 5, 2014" // TODO
+				renderUnixTime(tweet.status_unix_time)
 			}
 		}
 	}
@@ -110,5 +120,14 @@ private fun FlowContent.twitterHandleLink(handle: String) {
 	a(href = "https://twitter.com/$handle") {
 		rel = "noreferrer noopener"
 		+"@$handle"
+	}
+}
+
+private fun FlowContent.renderUnixTime(unixTime: Long) {
+	time {
+		val ldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(unixTime), UTC)
+		val formatted = ISO_LOCAL_DATE_TIME.format(ldt) + "Z"
+		dateTime = formatted
+		+formatted
 	}
 }

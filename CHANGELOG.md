@@ -6,6 +6,10 @@ Feature:
 
  * Persist account names at the time of tweet/retweet/quote
 
+Fixed:
+
+ * Display actual tweet timestamp and render with browser timezone and locale
+
 
 ## [1.0.0]
 
