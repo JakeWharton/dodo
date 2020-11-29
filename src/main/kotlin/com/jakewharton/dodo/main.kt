@@ -62,7 +62,7 @@ private abstract class DodoCommand(
 		val twitter = TwitterFactory(config).instance
 
 		withDatabase(dbPath) { db ->
-			val dodo = Dodo(twitter, db.tweetQueries)
+			val dodo = Dodo(twitter, db.tweetQueries, db.tweetIndexQueries)
 			run(dodo)
 		}
 	}

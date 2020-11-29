@@ -1,0 +1,52 @@
+CREATE VIRTUAL TABLE tweet_index USING fts5(
+  status_id INTEGER UNINDEXED,
+  status_text TEXT,
+  status_user_name TEXT,
+  status_user_handle TEXT,
+  retweeted_user_handle TEXT,
+  retweeted_user_name TEXT,
+  quoted_user_handle TEXT,
+  quoted_user_name TEXT,
+  quoted_text TEXT
+);
+
+CREATE TRIGGER tweet_after_insert AFTER INSERT ON tweet BEGIN
+  INSERT INTO tweet_index(
+    status_id,
+    status_text,
+    status_user_name,
+    status_user_handle,
+    retweeted_user_handle,
+    retweeted_user_name,
+    quoted_user_handle,
+    quoted_user_name,
+    quoted_text
+  )
+  VALUES (
+    new.status_id,
+    new.status_text,
+    new.status_user_name,
+    new.status_user_handle,
+    new.retweeted_user_handle,
+    new.retweeted_user_name,
+    new.quoted_user_handle,
+    new.quoted_user_name,
+    new.quoted_text
+  );
+END;
+
+search:
+SELECT
+	tweet.status_id,
+	tweet.status_user_handle,
+	tweet.status_text,
+	tweet.status_unix_time,
+	tweet.retweeted_user_handle,
+	tweet.retweeted_unix_time,
+	tweet.quoted_user_handle,
+	tweet.quoted_text,
+	tweet.quoted_unix_time
+FROM tweet
+INNER JOIN tweet_index ON tweet.status_id=tweet_index.status_id
+WHERE tweet_index MATCH ?1
+ORDER BY bm25(tweet_index);

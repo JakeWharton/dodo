@@ -38,20 +38,3 @@ totalCount:
 SELECT COUNT(status_id) AS count
 FROM tweet
 ;
-
-search:
-SELECT
-	status_id,
-	status_user_handle,
-	status_text,
-	status_unix_time,
-	retweeted_user_handle,
-	retweeted_unix_time,
-	quoted_user_handle,
-	quoted_text,
-	quoted_unix_time
-FROM tweet
-WHERE status_text LIKE '%' || ?1 || '%' ESCAPE '\'
-   OR quoted_text LIKE '%' || ?1 || '%' ESCAPE '\'
-ORDER BY status_id DESC
-;
