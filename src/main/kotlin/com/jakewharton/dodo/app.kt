@@ -14,7 +14,7 @@ import twitter4j.TwitterObjectFactory
 class Dodo(
 	private val twitter: Twitter,
 	private val tweetQueries: TweetQueries,
-	private val searchQueries: TweetIndexQueries
+	private val searchQueries: TweetIndexQueries,
 ) {
 	init {
 		require(twitter.configuration.isJSONStoreEnabled) {
