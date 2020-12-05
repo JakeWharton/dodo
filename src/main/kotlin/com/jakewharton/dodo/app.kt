@@ -1,6 +1,7 @@
 package com.jakewharton.dodo
 
 import com.jakewharton.dodo.db.Search
+import com.jakewharton.dodo.db.TweetIndexQueries
 import com.jakewharton.dodo.db.TweetQueries
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -12,7 +13,8 @@ import twitter4j.TwitterObjectFactory
 
 class Dodo(
 	private val twitter: Twitter,
-	private val queries: TweetQueries,
+	private val tweetQueries: TweetQueries,
+	private val searchQueries: TweetIndexQueries,
 ) {
 	init {
 		require(twitter.configuration.isJSONStoreEnabled) {
@@ -21,7 +23,7 @@ class Dodo(
 	}
 
 	fun sync() {
-		val newestStatusId = queries.newest().executeAsOne().status_id ?: 1L
+		val newestStatusId = tweetQueries.newest().executeAsOne().status_id ?: 1L
 
 		val tweets = twitter.timelines().getHomeTimeline(Paging(newestStatusId))
 		logger.info("Retrieved ${tweets.size} new tweets")
@@ -36,7 +38,7 @@ class Dodo(
 				text = tweet.text
 				quotedStatus = tweet.quotedStatus
 			}
-			queries.insert(
+			tweetQueries.insert(
 				status_id = tweet.id,
 				status_user_id = tweet.user.id,
 				status_user_handle = tweet.user.screenName,
@@ -61,20 +63,13 @@ class Dodo(
 
 	suspend fun totalCount(): Long {
 		return withContext(IO) {
-			queries.totalCount().executeAsOne()
+			tweetQueries.totalCount().executeAsOne()
 		}
 	}
 
-	suspend fun search(query: String): List<Search> {
-		return withContext(IO) {
-			queries.search(query.escapeLike('\\')).executeAsList()
-		}
+	suspend fun search(query: String): List<Search> = withContext(IO) {
+		searchQueries.search(query).executeAsList()
 	}
-
-	private fun String.escapeLike(escapeChar: Char) =
-		this.replace("$escapeChar", "$escapeChar$escapeChar")
-			.replace("%", "$escapeChar%")
-			.replace("_", "${escapeChar}_")
 
 	private companion object {
 		private val logger = LoggerFactory.getLogger(Dodo::class.java)

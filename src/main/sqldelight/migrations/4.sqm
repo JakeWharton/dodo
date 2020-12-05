@@ -1,0 +1,48 @@
+CREATE VIRTUAL TABLE tweet_index USING fts5(
+  status_id INTEGER UNINDEXED,
+  status_text TEXT,
+  status_user_name TEXT,
+  status_user_handle TEXT,
+  retweeted_user_handle TEXT,
+  retweeted_user_name TEXT,
+  quoted_user_handle TEXT,
+  quoted_user_name TEXT,
+  quoted_text TEXT
+);
+
+INSERT INTO tweet_index
+SELECT status_id,
+  status_text,
+  status_user_name,
+  status_user_handle,
+  retweeted_user_handle,
+  retweeted_user_name,
+  quoted_user_handle,
+  quoted_user_name,
+  quoted_text
+FROM tweet;
+
+CREATE TRIGGER tweet_after_insert AFTER INSERT ON tweet BEGIN
+  INSERT INTO tweet_index(
+    status_id,
+    status_text,
+    status_user_name,
+    status_user_handle,
+    retweeted_user_handle,
+    retweeted_user_name,
+    quoted_user_handle,
+    quoted_user_name,
+    quoted_text
+  )
+  VALUES (
+    new.status_id,
+    new.status_text,
+    new.status_user_name,
+    new.status_user_handle,
+    new.retweeted_user_handle,
+    new.retweeted_user_name,
+    new.quoted_user_handle,
+    new.quoted_user_name,
+    new.quoted_text
+  );
+END;
