@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX tweet_status_id ON tweet(status_id);
