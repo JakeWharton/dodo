@@ -23,6 +23,7 @@ CREATE TABLE tweet(
 
 	json TEXT NOT NULL
 );
+CREATE UNIQUE INDEX tweet_status_id ON tweet(status_id);
 
 newest:
 SELECT MAX(status_id) AS status_id
