@@ -1,6 +1,11 @@
 name: build
 
-on: [pull_request]
+on:
+  pull_request:
+  push:
+    branches:
+      - '**'
+      - '!trunk'
 
 env:
   GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4g -Dorg.gradle.daemon=false -Dkotlin.incremental=false"
