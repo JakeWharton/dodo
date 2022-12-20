@@ -11,14 +11,16 @@ COPY src ./src
 RUN ./gradlew build
 
 
-FROM golang:alpine AS shell
-RUN apk add --no-cache shellcheck
-ENV GO111MODULE=on
-RUN go get mvdan.cc/sh/v3/cmd/shfmt
+FROM koalaman/shellcheck-alpine:stable AS shellcheck
+WORKDIR /overlay
+COPY root/ ./
+RUN find . -type f | xargs shellcheck -e SC1008
+
+
+FROM mvdan/shfmt:v3-alpine AS shfmt
 WORKDIR /overlay
 COPY root/ ./
 COPY .editorconfig /
-RUN find . -type f | xargs shellcheck -e SC1008
 RUN shfmt -d .
 
 
