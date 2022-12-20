@@ -94,7 +94,7 @@ The container starts the webserver on port 8098 and automatically triggers sync 
  [layers]: https://microbadger.com/images/jakewharton/dodo
 
 ```
-$ docker run -it --rm
+$ docker run -it --rm \
     -v /path/to/data:/data \
     -e "CRON=*/3 * * * *" \
     -e "ACCESS_TOKEN=..." \
