@@ -28,7 +28,7 @@ dependencies {
 	implementation 'com.squareup.sqldelight:sqlite-driver:1.4.3'
 	implementation 'org.xerial:sqlite-jdbc:3.40.0.0'
 	implementation 'org.twitter4j:twitter4j-core:4.0.7'
-	implementation 'ch.qos.logback:logback-classic:1.2.3'
+	implementation 'ch.qos.logback:logback-classic:1.4.5'
 
 	def ktorVersion = '1.4.1'
 	implementation "io.ktor:ktor-server-core:${ktorVersion}"
