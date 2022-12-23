@@ -35,7 +35,7 @@ dependencies {
 	implementation "io.ktor:ktor-server-netty:${ktorVersion}"
 	implementation "io.ktor:ktor-html-builder:${ktorVersion}"
 
-	testImplementation 'junit:junit:4.13'
+	testImplementation 'junit:junit:4.13.2'
 	testImplementation 'com.google.truth:truth:1.0.1'
 }
 
