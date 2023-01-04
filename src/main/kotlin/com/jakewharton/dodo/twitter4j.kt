@@ -1,12 +1,6 @@
 package com.jakewharton.dodo
 
-import twitter4j.Status
-import twitter4j.conf.Configuration
-import twitter4j.conf.ConfigurationBuilder
-
-inline fun configuration(body: ConfigurationBuilder.() -> Unit): Configuration {
-	return ConfigurationBuilder().apply(body).build()
-}
+import twitter4j.v1.Status
 
 val Status.displayText: String get() {
 	return buildString {
