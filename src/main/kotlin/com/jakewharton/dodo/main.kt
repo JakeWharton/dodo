@@ -20,7 +20,7 @@ import io.ktor.routing.post
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import twitter4j.TwitterFactory
+import twitter4j.Twitter
 
 fun main(vararg args: String) {
 	NoOpCliktCommand(name = "dodo")
@@ -52,14 +52,11 @@ private abstract class DodoCommand(
 		.help("OAuth consumer API secret")
 
 	override fun run() {
-		val config = configuration {
-			setOAuthAccessToken(accessToken)
-			setOAuthAccessTokenSecret(accessSecret)
-			setOAuthConsumerKey(apiKey)
-			setOAuthConsumerSecret(apiSecret)
-			setJSONStoreEnabled(true)
-		}
-		val twitter = TwitterFactory(config).instance
+		val twitter = Twitter.newBuilder()
+			.oAuthAccessToken(accessToken, accessSecret)
+			.oAuthConsumer(apiKey, apiSecret)
+			.jsonStoreEnabled(true)
+			.build()
 
 		withDatabase(dbPath) { db ->
 			val dodo = Dodo(twitter, db.tweetQueries, db.tweetIndexQueries)

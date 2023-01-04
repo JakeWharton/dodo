@@ -1,7 +1,7 @@
 package com.jakewharton.dodo
 
-import twitter4j.Status
-import twitter4j.URLEntity
+import twitter4j.v1.Status
+import twitter4j.v1.URLEntity
 
 /** A minimal working subset of [Status] for testing purposes only. */
 data class TestStatus(
