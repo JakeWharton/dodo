@@ -24,7 +24,7 @@ mainClassName = 'com.jakewharton.dodo.Main'
 
 dependencies {
 	implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
-	implementation 'com.github.ajalt.clikt:clikt:3.5.1'
+	implementation 'com.github.ajalt.clikt:clikt:3.5.2'
 	implementation 'com.squareup.sqldelight:sqlite-driver:1.5.4'
 	implementation 'org.xerial:sqlite-jdbc:3.41.0.0'
 	implementation 'org.twitter4j:twitter4j-core:4.1.2'
