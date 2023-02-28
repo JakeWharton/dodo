@@ -30,7 +30,7 @@ dependencies {
 	implementation 'org.twitter4j:twitter4j-core:4.1.2'
 	implementation 'ch.qos.logback:logback-classic:1.4.5'
 
-	def ktorVersion = '1.6.8'
+	def ktorVersion = '2.2.4'
 	implementation "io.ktor:ktor-server-core:${ktorVersion}"
 	implementation "io.ktor:ktor-server-netty:${ktorVersion}"
 	implementation "io.ktor:ktor-html-builder:${ktorVersion}"
